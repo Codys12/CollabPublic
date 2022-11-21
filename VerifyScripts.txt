@@ -1,0 +1,9 @@
+npx hardhat verify --contract "contracts/Governance/Timelock.sol:Timelock" --network goerli TIMELOCK_ADDRESS
+npx hardhat verify --contract "contracts/Collaborator.sol:Collaborator" --network goerli COLLABORATOR_ADDRESS
+npx hardhat verify --contract "contracts/Storage.sol:Storage" --network goerli STORAGE_ADDRESS
+npx hardhat verify --contract "contracts/Governance/CollabGovernor.sol:CollabGovernor" --network goerli GOVERNOR_ADDRESS "COLLABORATOR_ADDRESS" "TIMELOCK_ADDRESS"
+npx hardhat verify --contract "contracts/Rewarding/RewardContract.sol:RewardContract" --network goerli REWARD_ADDRESS "COLLABORATOR_ADDRESS" "STORAGE_ADDRESS" "TIMELOCK_ADDRESS"
+
+npx hardhat verify --contract "contracts/Distribute.sol:Distribute" --network goerli DISTRIBUTE_ADDRESS
+
+npx hardhat verify --contract "contracts/Scanner.sol:Scanner" --network goerli SCANNER_ADDRESS
