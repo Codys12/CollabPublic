@@ -98,7 +98,7 @@ describe('Governance Contract', async () => {
             await collaborator.finalizeICO();
             await collaborator.connect(user1).approve(rewarder.address, requiredTokens);
             const tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
             await rewarder.connect(user1).propose(proposalId, user1.address, "asdf");
         })
 
@@ -116,7 +116,7 @@ describe('Governance Contract', async () => {
             await collaborator.finalizeICO();
             await collaborator.connect(user1).approve(rewarder.address, requiredTokens);
             const tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
             
             expect(await collaborator.balanceOf(user1.address)).to.equal(await collaborator.balanceOf(user2.address))
 
@@ -135,7 +135,7 @@ describe('Governance Contract', async () => {
             await collaborator.finalizeICO();
             await collaborator.connect(user1).approve(rewarder.address, requiredTokens);
             const tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
 
             await rewarder.connect(user1).castVote(proposalId, true, "good project");
             await expect(rewarder.connect(user1).castVote(proposalId, true, "good project")).to.be.revertedWith("User has already voted");
@@ -154,7 +154,7 @@ describe('Governance Contract', async () => {
             await collaborator.finalizeICO();
             await collaborator.connect(user1).approve(rewarder.address, requiredTokens);
             const tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
 
             await rewarder.connect(user1).castVote(proposalId, true, "good project");
             await expect(rewarder.connect(user1).rewardProposal(proposalId)).to.be.revertedWith("This proposal has not finished its voting phase");
@@ -171,7 +171,7 @@ describe('Governance Contract', async () => {
             const startBlock = parseInt((await hre.ethers.provider.getBlock("latest")).number);
             await collaborator.connect(user1).approve(rewarder.address, requiredTokens);
             const tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
 
             await rewarder.connect(user1).castVote(proposalId, true, "good project");
 
@@ -208,10 +208,10 @@ describe('Governance Contract', async () => {
             await collaborator.connect(user1).approve(rewarder.address, requiredTokens.mul(2));
 
             let tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId)
 
             tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposal2Id = (await tx.wait()).events[3].args.proposalId;
+            const proposal2Id = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId)
 
             await rewarder.connect(user2).castVote(proposalId, true, "good project");
             await rewarder.connect(user2).castVote(proposal2Id, true, "good project");
@@ -254,7 +254,7 @@ describe('Governance Contract', async () => {
             await collaborator.connect(user2).approve(rewarder.address, requiredTokens.mul(2));
 
             let tx = await rewarder.connect(user1).propose(0, user1.address, "asdf");
-            const proposalId = (await tx.wait()).events[3].args.proposalId;
+            const proposalId = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
 
 
             await rewarder.connect(user3).castVote(proposalId, true, "good project");
@@ -269,7 +269,7 @@ describe('Governance Contract', async () => {
 
 
             tx = await rewarder.connect(user2).propose(proposalId, user2.address, "asdf");
-            const proposal2Id = (await tx.wait()).events[3].args.proposalId;
+            const proposal2Id = parseInt(storage.interface.parseLog((await tx.wait()).logs[3]).args.proposalId);
 
             const startBlock = parseInt((await hre.ethers.provider.getBlock("latest")).number);
 
